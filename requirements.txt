@@ -1,4 +1,4 @@
-libtesseract-dev
+tesseract-ocr
 Pillow
 pytesseract
 transformers
