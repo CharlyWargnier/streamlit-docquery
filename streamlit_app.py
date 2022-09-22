@@ -15,7 +15,7 @@ st.image(
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/magnifying-glass-tilted-right_1f50e.png",
 )
 
-st.title("QueryDocs")
+st.title("QueryDoc")
 st.write("")
 
 st.write(
