@@ -50,5 +50,5 @@ if file_name is not None:
     if submit_button:
         st.write(pipe(image=image_sample, question=question))
 else:
-    st.info("☝️ Please upload a document format (pdf, png, jpg, jpeg)")
+    st.info("☝️ Please upload a document (pdf, png, jpg, jpeg)")
     st.stop()
