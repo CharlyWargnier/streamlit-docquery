@@ -22,7 +22,13 @@ img_path = "contract.jpeg"
 with st.expander("Show image"):
     st.image(img_path, width=1000)
 
-pipe = pipeline("document-question-answering")
+# pipe = pipeline("document-question-answering")
+
+@st.experimental_singleton
+def get_pipeline():
+    return pipeline("document-question-answering")
+
+pipe = get_pipeline()
 
 pipe(image=img_path, question="what is the purchase amount?")
 
