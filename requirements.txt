@@ -2,3 +2,4 @@ tesseract-ocr
 Pillow
 pytesseract
 transformers
+streamlit
