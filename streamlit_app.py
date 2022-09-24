@@ -117,7 +117,7 @@ with left:
                 data=file,
                 file_name="invoice.png",
                 mime="text/csv",
-                key="download_2",
+                key="download_3",
             )
 
     with st.expander("Show document", expanded=True):
