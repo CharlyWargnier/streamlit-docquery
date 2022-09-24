@@ -1,30 +1,5 @@
-# https://colab.research.google.com/drive/1AzlWMXHwGNLtmi12YIOukddZLHjQttSO?usp=sharing#scrollTo=ZG495Ywkqs27
-# https://huggingface.co/tasks/question-answering
-
-
 import streamlit as st
-
 import streamlit_nested_layout
-
-
-# outer_cols = st.columns([1, 1])
-#
-# with outer_cols[0]:
-#     st.markdown("## Column 1")
-#     st.selectbox("selectbox", [1, 2, 3], key="sel1")
-#
-#     inner_cols = st.columns([1, 1])
-#     with inner_cols[0]:
-#         st.markdown("Nested Column 1")
-#         st.selectbox("selectbox", [1, 2, 3], key="sel2")
-#     with inner_cols[1]:
-#         st.markdown("Nested Column 2")
-#         st.selectbox("selectbox", [1, 2, 3], key="sel3")
-
-
-# st.stop()
-
-
 from transformers import pipeline
 from PIL import Image
 
@@ -45,31 +20,23 @@ with centre:
 
     st.title("DocQuery: Document Query Engine")
 
-    # st.write(
-    #     "This app relies on the new `document-question-answering` pipeline from the Huggingface `Transformers` library. It lets you get insights into your documents, invoices etc."
-    # )
-    #
-    # st.write(
-    #     "This model was created by the team at Impira. This is a fine-tuned version of the multi-modal LayoutLM model for the task of question answering on documents. It has been fine-tuned using both the SQuAD2.0 and DocVQA datasets. The model is available on the Huggingface model hub: https://huggingface.co/impira/layoutlm-document-qa"
-    # )
-
     st.markdown("")
 
     st.markdown(
         """
 
-    🎈 [Streamlit](https://streamlit.io/) app created by [Charly Wargnier](https://twitter.com/DataChaz) using [Impira's](https://www.impira.com/)'s DocQuery models.
+    🎈 [Streamlit](https://streamlit.io/) app created by [Charly Wargnier](https://twitter.com/DataChaz) using [Impira](https://www.impira.com/)'s DocQuery models.
 
     """
     )
 
     st.markdown(
-        "DocQuery (created by [Impira](https://impira.com?utm_source=huggingface&utm_medium=referral&utm_campaign=docquery_space))"
-        " uses LayoutLMv1 fine-tuned on DocVQA, a document visual question"
-        " answering dataset, as well as SQuAD, which boosts its English-language comprehension."
-        " To use it, simply upload an image or PDF, type a question, and click 'submit', or "
-        " click one of the examples to load them."
-        " DocQuery is MIT-licensed and available on [Github](https://github.com/impira/docquery)."
+        "DocQuery uses [LayoutLMv1](https://huggingface.co/docs/transformers/model_doc/layoutlm) fine-tuned on [DocVQA](https://www.docvqa.org/), a document visual question"
+        " answering dataset, as well as The Stanford Question Answering Dataset ([SQuAD](https://paperswithcode.com/dataset/squad)), which boosts its English-language comprehension."
+    )
+
+    st.markdown(
+        "To use it, simply upload a document in `png` or `jpeg` format, type a question, and click 'Submit'!✨"  
     )
 
     st.markdown("---")
@@ -132,18 +99,16 @@ with left:
 
     pipe = get_pipeline()
 
-    # pipe(image=image_sample, question="what is the purchase amount?")
-
 with right:
 
     st.write("### 2. Ask a question")
 
-    st.caption("E.g.: What is the purchase amount? What is the date of the invoice?")
+    st.caption("Eg: What is the purchase amount? What is the invoice date?")
 
     with st.form(key="my_form"):
 
         CHECKPOINTS = {
-            "LayoutLMv1": "impira/layoutlm-document-qa",
+            "LMv1": "impira/layoutlm-document-qa",
             "LMv1/Invoices": "impira/layoutlm-invoices",
             "Donut 🍩": "naver-clova-ix/donut-base-finetuned-docvqa",
         }
@@ -155,8 +120,6 @@ with right:
         )
 
         submit_button = st.form_submit_button(label="Submit")
-
-        # question = st.text_input("Question", value="what is the purchase amount?")
 
     if file_name is not None:
 
