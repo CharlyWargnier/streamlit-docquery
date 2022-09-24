@@ -36,7 +36,7 @@ with centre:
     )
 
     st.markdown(
-        "To use it, simply upload a document in `png` or `jpeg` format, type a question, and click 'Submit'!✨"  
+        "To use it, simply upload a document in `png` or `jpeg` format, type a question, and click 'Submit'!✨"
     )
 
     st.markdown("---")
@@ -51,6 +51,9 @@ with left:
 
     file_name = st.file_uploader("", type=["png", "jpg", "jpeg"])
     c = st.container()
+
+    st.caption("")
+    st.caption("Download sample files")
 
     outer_cols = st.columns([0.9, 1, 1, 1])
 
@@ -86,6 +89,8 @@ with left:
                 mime="text/csv",
                 key="download_3",
             )
+
+    st.write("")
 
     with st.expander("Show document", expanded=True):
 
@@ -126,7 +131,57 @@ with right:
         if submit_button:
 
             answer = pipe(image=image_sample, question=question)
-            st.write(answer)
+            score = answer["score"]
+            score = "{:.2%}".format(score)
+
+            answers = answer["answer"]
+            start = answer["start"]
+            end = answer["end"]
+
+            st.write("")
+
+            st.write("### 2. Ask a question")
+
+            st.markdown(
+                f"""
+
+            <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+            <div class="ui vertical steps">
+            <div class="active step">
+                <i class="check square outline icon"></i>
+                <div class="content">
+                <div class="title">Answer</div>
+                <div class="description">{answers}</div>
+                </div>
+            </div>
+            <div class="active step">
+                <i class="percent icon"></i>
+                <div class="content">
+                <div class="title">Score</div>
+                <div class="description">{score}</div>
+                </div>
+            </div>
+            <div class="active step">
+                <i class="play icon"></i>
+                <div class="content">
+                <div class="title">Start</div>
+                <div class="description">{start}</div>
+                </div>
+            </div>
+            <div class="active step">
+                <i class="stop circle icon"></i>
+                <div class="content">
+                <div class="title">End</div>
+                <div class="description">{end}</div>
+                </div>
+            </div>
+            </div>
+
+            """,
+                unsafe_allow_html=True,
+            )
 
     else:
         c.info("☝️ Please upload a document to get started.")
