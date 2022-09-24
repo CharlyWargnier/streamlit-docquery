@@ -85,7 +85,7 @@ with left:
     file_name = st.file_uploader("", type=["png", "jpg", "jpeg"])
     c = st.container()
 
-    outer_cols = st.columns([1, 1, 1, 1])
+    outer_cols = st.columns([0.9, 1, 1, 1])
 
     with outer_cols[0]:
 
