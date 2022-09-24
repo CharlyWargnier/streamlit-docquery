@@ -3,4 +3,5 @@ Pillow
 pytesseract
 transformers
 streamlit
+streamlit-nested-layout
 torch==1.11.0
