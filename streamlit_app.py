@@ -96,11 +96,11 @@ with left:
 
     st.write("")
 
-    with st.expander("Show document", expanded=True):
+    #    with st.expander("Show document", expanded=True):
 
-        if file_name is not None:
-            image_sample = Image.open(file_name)
-            st.image(image_sample, use_column_width=True)
+    if file_name is not None:
+        image_sample = Image.open(file_name)
+        st.image(image_sample, use_column_width=True)
 
     @st.experimental_singleton
     def get_pipeline():
@@ -143,50 +143,63 @@ with right:
             end = answer["end"]
 
             st.caption("")
-            st.caption("")
 
             st.write("### 3. Check the answer")
 
-            # bootstrap 4 collapse example
-            components.html(
-                f"""
-            <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+            outer_cols = st.columns([1, 1])
 
-            <div class="ui vertical steps">
-            <div class="active step">
-                <i class="check square outline icon"></i>
-                <div class="content">
-                <div class="title">Answer</div>
-                <div class="description">{answers}</div>
-                </div>
-            </div>
-            <div class="active step">
-                <i class="percent icon"></i>
-                <div class="content">
-                <div class="title">Score</div>
-                <div class="description">{score}</div>
-                </div>
-            </div>
-            <div class="active step">
-                <i class="play icon"></i>
-                <div class="content">
-                <div class="title">Start</div>
-                <div class="description">{start}</div>
-                </div>
-            </div>
-            <div class="active step">
-                <i class="stop circle icon"></i>
-                <div class="content">
-                <div class="title">End</div>
-                <div class="description">{end}</div>
-                </div>
-            </div>
-            </div>
+            with outer_cols[0]:
 
-                """,
-                height=600,
-            )
+                # bootstrap 4 collapse example
+                components.html(
+                    f"""
+                <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+                <div class="ui vertical steps">
+                <div class="active step">
+                    <i class="check square outline icon"></i>
+                    <div class="content">
+                    <div class="title">Answer</div>
+                    <div class="description">{answers}</div>
+                    </div>
+                </div>
+                <div class="active step">
+                    <i class="percent icon"></i>
+                    <div class="content">
+                    <div class="title">Score</div>
+                    <div class="description">{score}</div>
+                    </div>
+                </div>
+                <div class="active step">
+                    <i class="play icon"></i>
+                    <div class="content">
+                    <div class="title">Start</div>
+                    <div class="description">{start}</div>
+                    </div>
+                </div>
+                <div class="active step">
+                    <i class="stop circle icon"></i>
+                    <div class="content">
+                    <div class="title">End</div>
+                    <div class="description">{end}</div>
+                    </div>
+                </div>
+                </div>
+
+                    """,
+                    height=500,
+                )
+
+            st.write("### ImageDraw Drafts!")
+
+            import sys
+            from PIL import Image, ImageDraw
+
+            highlight = image_sample.copy()
+            draw = ImageDraw.Draw(highlight)
+            draw.rectangle([start, 0, end, 1000], outline="red", width=5)
+            st.image(highlight)
 
     else:
         c.info("☝️ Please upload a document to get started.")
