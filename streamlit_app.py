@@ -3,12 +3,16 @@ import streamlit_nested_layout
 from transformers import pipeline
 from PIL import Image
 
+import streamlit as st
+import streamlit.components.v1 as components
+
 
 st.set_page_config(
     page_title="DocQuery: Document Query Engine",
     page_icon="🍩",
     layout="wide",
 )
+
 
 _, centre, _ = st.columns([1, 4, 1])
 
@@ -138,13 +142,14 @@ with right:
             start = answer["start"]
             end = answer["end"]
 
-            st.write("")
+            st.caption("")
+            st.caption("")
 
-            st.write("### 2. Ask a question")
+            st.write("### 3. Check the answer")
 
-            st.markdown(
+            # bootstrap 4 collapse example
+            components.html(
                 f"""
-
             <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 
@@ -179,8 +184,8 @@ with right:
             </div>
             </div>
 
-            """,
-                unsafe_allow_html=True,
+                """,
+                height=600,
             )
 
     else:
