@@ -1,3 +1,6 @@
+# https://colab.research.google.com/drive/1AzlWMXHwGNLtmi12YIOukddZLHjQttSO?usp=sharing#scrollTo=pOfOs4lzqpJp
+# https://huggingface.co/docs/transformers/main_classes/pipelines
+
 import streamlit as st
 import streamlit_nested_layout
 from transformers import pipeline
@@ -12,7 +15,6 @@ st.set_page_config(
     page_icon="🍩",
     layout="wide",
 )
-
 
 _, centre, _ = st.columns([1, 4, 1])
 
@@ -102,11 +104,6 @@ with left:
         image_sample = Image.open(file_name)
         st.image(image_sample, use_column_width=True)
 
-    @st.experimental_singleton
-    def get_pipeline():
-        return pipeline("document-question-answering")
-
-    pipe = get_pipeline()
 
 with right:
 
@@ -134,7 +131,14 @@ with right:
 
         if submit_button:
 
+            @st.cache(allow_output_mutation=True)
+            def get_pipeline():
+                return pipeline("document-question-answering", model=CHECKPOINTS[model])
+
+            pipe = get_pipeline()
+
             answer = pipe(image=image_sample, question=question)
+            answer
             score = answer["score"]
             score = "{:.2%}".format(score)
 
@@ -194,7 +198,7 @@ with right:
 
             highlight = image_sample.copy()
             draw = ImageDraw.Draw(highlight)
-            draw.rectangle([start, 0, end, 1000], outline="red", width=5)
+            draw.rectangle([start, end, end, start], outline="red", width=5)
             st.image(highlight)
 
     else:
