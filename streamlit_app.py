@@ -143,10 +143,10 @@ with right:
             st.caption("")
             st.write("### 3. Check the answer")
 
-            answer
-
             if model == "Donut 🍩":
-                answers = answer["answer"]
+                # answers = answer["answer"]
+                answer
+
 
             else:
 
