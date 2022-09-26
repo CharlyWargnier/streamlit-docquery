@@ -117,7 +117,7 @@ with right:
         CHECKPOINTS = {
             "LMv1": "impira/layoutlm-document-qa",
             "LMv1/Invoices": "impira/layoutlm-invoices",
-            "Donut 🍩": "naver-clova-ix/donut-base-finetuned-docvqa",
+            "Donut": "naver-clova-ix/donut-base-finetuned-docvqa",
         }
 
         model = st.radio("Select a model", list(CHECKPOINTS.keys()), horizontal=True)
@@ -143,7 +143,7 @@ with right:
             st.caption("")
             st.write("### 3. Check the answer")
 
-            if model == "Donut 🍩":
+            if model == "Donut":
                 # answers = answer["answer"]
                 answer
 
