@@ -2,13 +2,14 @@
 # https://huggingface.co/docs/transformers/main_classes/pipelines
 
 import streamlit as st
-import streamlit_nested_layout
-from transformers import pipeline
-from PIL import Image
-
-import streamlit as st
 import streamlit.components.v1 as components
+import streamlit_nested_layout
 
+from transformers import pipeline
+
+# Libraries for image processing
+import sys
+from PIL import Image, ImageDraw
 
 st.set_page_config(
     page_title="DocQuery: Document Query Engine",
@@ -131,75 +132,94 @@ with right:
 
         if submit_button:
 
-            @st.cache(allow_output_mutation=True)
-            def get_pipeline():
+            @st.experimental_singleton
+            def get_pipeline(model: str):
                 return pipeline("document-question-answering", model=CHECKPOINTS[model])
 
-            pipe = get_pipeline()
+            pipe = get_pipeline(model)
 
             answer = pipe(image=image_sample, question=question)
-            answer
-            score = answer["score"]
-            score = "{:.2%}".format(score)
-
-            answers = answer["answer"]
-            start = answer["start"]
-            end = answer["end"]
 
             st.caption("")
-
             st.write("### 3. Check the answer")
 
-            # bootstrap 4 collapse example
-            components.html(
-                f"""
-            <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+            answer
 
-            <div class="ui vertical steps">
-            <div class="active step">
-                <i class="check square outline icon"></i>
-                <div class="content">
-                <div class="title">Answer</div>
-                <div class="description">{answers}</div>
+            if model == "Donut 🍩":
+                answers = answer["answer"]
+                components.html(
+                    f"""
+                <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+                <div class="ui vertical steps">
+                <div class="active step">
+                    <i class="check square outline icon"></i>
+                    <div class="content">
+                    <div class="title">Answer</div>
+                    <div class="description">{answers}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="active step">
-                <i class="percent icon"></i>
-                <div class="content">
-                <div class="title">Score</div>
-                <div class="description">{score}</div>
+                    """,
+                    height=500,
+                )
+
+            else:
+
+                # List of answers
+
+                answers = answer["answer"]
+                score = answer["score"]
+                score = "{:.2%}".format(score)
+                start = answer["start"]
+                end = answer["end"]
+
+                components.html(
+                    f"""
+                <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+                <div class="ui vertical steps">
+                <div class="active step">
+                    <i class="check square outline icon"></i>
+                    <div class="content">
+                    <div class="title">Answer</div>
+                    <div class="description">{answers}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="active step">
-                <i class="play icon"></i>
-                <div class="content">
-                <div class="title">Start</div>
-                <div class="description">{start}</div>
+                <div class="active step">
+                    <i class="percent icon"></i>
+                    <div class="content">
+                    <div class="title">Score</div>
+                    <div class="description">{score}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="active step">
-                <i class="stop circle icon"></i>
-                <div class="content">
-                <div class="title">End</div>
-                <div class="description">{end}</div>
+                <div class="active step">
+                    <i class="play icon"></i>
+                    <div class="content">
+                    <div class="title">Start</div>
+                    <div class="description">{start}</div>
+                    </div>
                 </div>
-            </div>
-            </div>
+                <div class="active step">
+                    <i class="stop circle icon"></i>
+                    <div class="content">
+                    <div class="title">End</div>
+                    <div class="description">{end}</div>
+                    </div>
+                </div>
+                </div>
 
-                """,
-                height=500,
-            )
+                    """,
+                    height=500,
+                )
 
-            st.write("### ImageDraw Drafts!")
+                st.write("### ImageDraw Drafts!")
 
-            import sys
-            from PIL import Image, ImageDraw
-
-            highlight = image_sample.copy()
-            draw = ImageDraw.Draw(highlight)
-            draw.rectangle([start, end, end, start], outline="red", width=5)
-            st.image(highlight)
+                highlight = image_sample.copy()
+                draw = ImageDraw.Draw(highlight)
+                draw.rectangle([start, end, end, start], outline="red", width=5)
+                st.image(highlight)
 
     else:
         c.info("☝️ Please upload a document to get started.")
