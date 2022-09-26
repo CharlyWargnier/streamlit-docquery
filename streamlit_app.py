@@ -147,22 +147,6 @@ with right:
 
             if model == "Donut 🍩":
                 answers = answer["answer"]
-                components.html(
-                    f"""
-                <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-
-                <div class="ui vertical steps">
-                <div class="active step">
-                    <i class="check square outline icon"></i>
-                    <div class="content">
-                    <div class="title">Answer</div>
-                    <div class="description">{answers}</div>
-                    </div>
-                </div>
-                    """,
-                    height=500,
-                )
 
             else:
 
